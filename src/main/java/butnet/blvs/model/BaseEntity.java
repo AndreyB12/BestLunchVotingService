@@ -1,10 +1,15 @@
 package butnet.blvs.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
+
 /**
  * Created by butkoav on 24.05.2017.
  */
-public abstract class BaseEntity {
 
+// http://stackoverflow.com/questions/594597/hibernate-annotations-which-is-better-field-or-property-access
+public abstract class BaseEntity implements Persistable<Integer> {
+    @Id
     private Integer id;
 
     protected BaseEntity() {
@@ -18,12 +23,10 @@ public abstract class BaseEntity {
         this.id = id;
     }
 
-    @Override
     public Integer getId() {
         return id;
     }
 
-    @Override
     public boolean isNew() {
         return (getId() == null);
     }
@@ -33,7 +36,7 @@ public abstract class BaseEntity {
         if (this == o) {
             return true;
         }
-        if (o == null || !getClass().equals(Hibernate.getClass(o))) {
+        if (o == null || !getClass().equals(o.getClass())) {
             return false;
         }
         BaseEntity that = (BaseEntity) o;
